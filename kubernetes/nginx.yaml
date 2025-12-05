@@ -1,0 +1,12 @@
+# Example Pod Specification (minimal definition)
+apiVersion: v1
+kind: Pod
+metadata:
+  labels: # can add any labels you want. used for organizing and selecting pods.
+    run: nginx
+    new-label: example # my added label
+  name: nginx # can change name to whatever you want
+spec:
+  containers:
+  - image: nginx
+    name: nginx
