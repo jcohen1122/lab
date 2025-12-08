@@ -30,6 +30,8 @@ Each VM is called a **worker node**. The load balancer is called the **control p
 
 **Context:** A named set of parameters that defines how **kubectl** connects to a specific Kubernetes cluster. Includes the cluster, user, and namespace.
 
+**Namespaces:** provides a mechanism for isolating groups of resources within a single cluster. The initial namespace is **default**.
+
 ## Installing Needed Packages
 Install needed packages using brew
 ```bash
@@ -43,6 +45,7 @@ brew install helm # package manager for Kubernetes that helps you manage Kuberne
 ```bash
 minikube start # start cluster
 minikube stop # stop cluster
+minikube delete # delete cluster
 minikube status # show pods running
 ```
 
@@ -52,8 +55,9 @@ Informational Commands
 kubectl explain [resource] # show documentation for a resource
 kubectl describe -f [pod] # give information about a pod
 
-kubectl get pods -A # Show all pods running
+kubectl get pods -A # show all pods running
 kubectl get pods -o wide # show IP, node, etc
+kubectl get deployments.apps # show deployments
  
 kubectl config # list configurations
 kubectl config current-context # minikube, docker-desktop, rancher-desktop, etc
@@ -68,9 +72,23 @@ kubectl edit pod [pod] # Edit the pod YAML file
 kubectl delete pod [pod] # Delete a pod
 kubectl exec [pod] -- [command] # Execute a command in the pod
 ```
-
-### [🔗](https://helm.sh/docs/intro/install/) helm
 ```bash
+kubectl create deployment NAME --image=image -- [COMMAND] [args...] [options] # create a deployment with the specified name
+kubectl edit deployments.apps NAME # edit deployment
+kubectl delete deployments.apps NAME # delete deployment
+```
+
+### [🔗](https://helm.sh/docs/intro/CheatSheet) helm
+Package manager for Kubernetes
+```bash
+helm create [chart] # Creates a chart directory along with the common files and directories used in a chart.
+helm package [chart] # Packages a chart into a versioned chart archive file.
+helm lint [chart] # Run tests to examine a chart and identify possible issues:
+helm show all [chart] # Inspect a chart and list its contents:
+helm show values [chart] # Displays the contents of the values.yaml file
+helm pull [chart] # Download/pull chart
+helm dependency list [chart] # Display a list of a chart’s dependencies:
+# more on document linked
 ```
 
 ## Creating and Running An Example Pod
@@ -92,4 +110,28 @@ kubectl exec -it nginx -- /bin/bash # enter interactive shell within container
 apt update # download and update packages
 apt install htop # install htop
 htop # can view resources within pod
+```
+
+## Deployment Examples
+Normally you don't just run one pod with k8.
+```bash
+kubectl create deployment test --image=nginx --replicas=3
+kubectl get deployments.apps
+kubectl edit deployments.apps test
+kubectl delete deployments.apps test
+```
+Can do a dry run to get a test YAML much like with ```kubectl run```.
+```bash
+kubectl create deployment test --image=nginx --replicas=10 --dry-run=client -o yaml > deploy.yaml # Create example deployment YAML
+kubectl apply -f deploy.yaml
+kubectl get deployments.apps
+kubectl get replicasets.apps # ReplicaSets create pods in the background
+code deploy.yaml # can edit and update which image is used
+kubectl apply -f deploy.yaml # reapply yaml
+watch -n 1 "kubectl get pods" # watch actively running pods
+```
+You can also manage namespaces
+```bash
+kubectl get namespaces
+kubectl create namespace test-namespace -o yaml --dry-run=client > namespace.yaml # Create example namespace YAML
 ```
