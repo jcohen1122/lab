@@ -1,10 +1,18 @@
 # Java Notes
+## Advantages of Object Oriented Programming
+1. Modularity: code is organized into classes and objects, making it easy to manage.
+2. Reusability: Classes and methods can be reused in different programs.
+3. Encapsulation: access to data is restricted, improving security.
+4. Inheritance: reduces code duplication.
+
 ## Core Concepts
+**Java always uses pass by value, never pass by reference**
+
 **Encapsulation:** Process of hiding internal state of an object and only exposing a controlled interface.
 
 **Inheritance:** Allows a class to acquire fields and methods from another class. Describes an "is-a" relationship. For example if Bird extends Animal, Bird IS an animal.
 
-**Polymorphism:** The ability of an object to take on many forms. Achieved in Java through **method overriding** and **method overloading**.
+**Polymorphism:** The ability of an object to take on many forms. Occurs in Java when we have many objects related by inheritance.
 
 **Method Overriding:** When a subclass provides a specific implementation of a method already defined in its superclass.
 ```java
@@ -91,6 +99,89 @@ public class Main {
 }
 ```
 
+**Process vs Thread:** A process is a program in execution. A thread is a subset of a process.
+
+## Generics
+**Type Parameterization:** Generics allow a placeholder for a type when defining a class or method.
+```java
+class Box<T> {
+    private T item;
+
+    public void setItem(T item) {
+        this.item = item;
+    }
+
+    public T getItem() {
+        return item;
+    }
+}
+
+public class Main {
+    public static void main(String args[]) {
+        Box<String> stringBox = new Box<>();
+        stringBox.setItem("Hello");
+        System.out.println(stringBox.getItem());
+    }
+}
+```
+Can use a **wildcard (?)** when you don't know the exact type.
+```java
+public void printList(List<?> list) {
+    for (Object obj : list) {
+        System.out.println(obj);
+    }
+}
+
+public void printNumbers(List<? extends Number> list) {
+    for (Number num : list) {
+        System.out.println(num);
+    }
+}
+```
+
+## Interfaces
+Defines a blueprint for a class. Only contains method signatures and constants.
+```java
+interface Animal {
+    void eat(); // abstract method
+}
+
+class Dog implements Animal {
+    public void eat() {
+        System.out.println("Dog is eating");
+    }
+}
+
+public class InterfaceExample {
+    public static void main(String[] args) {
+        Animal dog = new Dog();
+        dog.eat();
+    }
+}
+```
+
+## Abstract Classes
+Can have both abstract methods and concrete methods.
+```java
+abstract class Animal {
+    abstract void eat(); // Abstract method
+}
+
+class Dog extends Animal {
+    @Override
+    void eat() {
+        System.out.println("Dog is eating");
+    }
+}
+
+public class AbstractClassExample {
+    public static void main(String[] args) {
+        Animal dog = new Dog();
+        dog.eat();
+    }
+}
+```
+
 ## Coding Snippets
 ### Compiling & Running Java
 ```bash
@@ -126,4 +217,43 @@ StringBuffer (thread safe)
 ```java
 StringBuffer sb = new StringBuffer("Hello");
 sb.append(" World"); // Modifies existing object
+```
+
+### Making Custom Exceptions
+```java
+class NullParameterException extends Exception {
+    public NullParameterException(String message) {
+        super(message);
+    }
+}
+
+class FooClass {
+    public void fooMethod(String param) throws NullParameterException {
+        if (param == null) {
+            throw new NullParameterException("Param must not be null");
+        }
+        System.out.println("Param is valid");
+    }
+}
+```
+
+### Sorting a Stream
+```java
+List<String> myList = Arrays.asList("a1", "a2", "b1", "c2", "c1");
+List<String> sortedList = myList.stream()
+    .sorted()
+    .collect(Collectors.toList());
+```
+
+### String to Integer
+```java
+String str = "123";
+int num = Integer.parseInt(str);
+```
+
+### Find Index of String in a String
+```java
+public int strStr(String haystack, String needle) {
+    return haystack.indexOf(needle);
+}
 ```
