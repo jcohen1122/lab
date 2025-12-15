@@ -182,6 +182,49 @@ public class AbstractClassExample {
 }
 ```
 
+## Streams
+Used to process a collection of objects. Methods can be chained together.
+Input -> [intermediate operations 1, 2, ... n] -> Terminal Operation -> Output
+
+### Intermediate Operations
+- **map()** returns the results of applying the given function to the stream
+- **filter()** returns the results of applying the given condition to the stream
+- **sorted()** sorts the stream
+- **flatMap()** flatten the stream into a single stream of elements
+- **distinct()** removes duplicate elements
+- **peek()** performs an action on each element without modifying the stream
+
+### Terminal Operations
+- **collect()** returns the results of intermediate operations performed on a stream
+- **forEach()** iterate through every element of the stream
+- **reduce()** reduce the stream to a single value
+- **count()** returns the count of the element stream
+- **findFirst()** returns first element of the stream
+- **allMatch()** checks if all elements match the given predicate
+- **anyMatch()** checks if any elements match the given predicate
+
+### Example
+```java
+List<List<String>> listOfLists = Arrays.asList(
+            Arrays.asList("Reflection", "Collection", "Stream"),
+            Arrays.asList("Structure", "State", "Flow"),
+            Arrays.asList("Sorting", "Mapping", "Reduction", "Stream")
+        );
+
+// Create a set to hold intermediate results
+Set<String> intermediateResults = new HashSet<>();
+
+// Stream pipeline demonstrating various intermediate operations
+List<String> result = listOfLists.stream()
+    .flatMap(List::stream)              
+    .filter(s -> s.startsWith("S"))      
+    .map(String::toUpperCase)          
+    .distinct()                          
+    .sorted()                            
+    .peek(s -> intermediateResults.add(s))
+    .collect(Collectors.toList());
+```
+
 ## Coding Snippets
 ### Compiling & Running Java
 ```bash

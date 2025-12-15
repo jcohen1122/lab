@@ -30,3 +30,11 @@ find .git/refs -type f
 find .git/refs -type f -name "*name*" -delete
 # original branch name without spaces
 ```
+
+### Create repo from local project
+```bash
+git init
+git remote add origin [repo_url]
+git branch -M main
+git push -u origin main
+```
