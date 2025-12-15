@@ -1,14 +1,14 @@
 # Java Notes
 
 ## Table of Contents
-1. ### [Advantages of OOP](#advantages-of-object-oriented-programming)
-2. ### [Core Concepts](#core-concepts)
-3. ### [Data Structures and Collections](#data-structures-and-collections)
-4. ### [Multithreading and Concurrency](#multithreading-and-concurrency)
-5. ### [Generics](#generics)
-6. ### [Interfaces](#interfaces)
-7. ### [Abstract Classes](#abstract-classes)
-8. ### [Streams](#streams)
+1. ### [Advantages of OOP](#advantages-of-object-oriented-programming-1)
+2. ### [Core Concepts](#core-concepts-1)
+3. ### [Data Structures and Collections](#data-structures-and-collections-1)
+4. ### [Multithreading and Concurrency](#multithreading-and-concurrency-1)
+5. ### [Generics](#generics-1)
+6. ### [Interfaces](#interfaces-1)
+7. ### [Abstract Classes](#abstract-classes-1)
+8. ### [Streams](#streams-1)
 9. ### [Code Snippets](#coding-snippets)
 
 ## Advantages of Object Oriented Programming
