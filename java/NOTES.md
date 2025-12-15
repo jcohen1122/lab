@@ -1,4 +1,16 @@
 # Java Notes
+
+## Table of Contents
+1. ### [Advantages of OOP](#advantages-of-object-oriented-programming)
+2. ### [Core Concepts](#core-concepts)
+3. ### [Data Structures and Collections](#data-structures-and-collections)
+4. ### [Multithreading and Concurrency](#multithreading-and-concurrency)
+5. ### [Generics](#generics)
+6. ### [Interfaces](#interfaces)
+7. ### [Abstract Classes](#abstract-classes)
+8. ### [Streams](#streams)
+9. ### [Code Snippets](#coding-snippets)
+
 ## Advantages of Object Oriented Programming
 1. Modularity: code is organized into classes and objects, making it easy to manage.
 2. Reusability: Classes and methods can be reused in different programs.
