@@ -11,7 +11,12 @@
 2. [Creational Design Patterns](#creational-design-patterns)
     - [Builder](#builder)
     - [Factories](#factories)
+    - [Prototype](#prototype)
+    - [Singleton](#singleton)
 3. [Structural Design Patterns](#structural-design-patterns)
+    - [Adapter](#adapter)
+    - [Bridge](#bridge)
+    - [Composite](#composite)
 4. [Behavioral Design Patterns](#behavioral-design-patterns)
 
 ## SOLID Design Principles
@@ -124,12 +129,85 @@ Motivation
 
 **Examples:** ```DesignExamples/Factory.java```, ```DesignExamples/AbstractFactory.java```
 
+### Prototype
+Motivation
+- When it's easier to copy an existing object than to fully initialize a new one
+- We rescursively deep copy the prototype and customize it
+
+**Prototype**: an object that you clone to make use of.
+
+**Deep Copy:** copy all nested objects and structures to avoid sharing references.
+
+**Shallow Copy:** simply copying the references. Changing one object affects the other object.
+
+*Don't just use cloneable because it will give a shallow copy*
+
+We can use copy constructors, we can override cloneable, or we can use serialization..
+
+**Examples:** ```DesignExamples/PrototypeCloneable```, ```DesignExamples/PrototypeCopyConstructor```, ```DesignExamples/PrototypeSerialization```
+
+### Singleton
+Motivation
+- For some components, it only makes sense to have one instance. For example a database.
+- The constructor call is expensive
+- Want to prevent anyone from creating additional copies
+
+**Singleton:** a component which is instantiated only once.
+
+**Multiton:** there are a finite set of instances.
+
+```java
+// Test if an object is a singleton instance
+import java.util.function.Supplier;
+
+class SingletonTester
+{
+  public static boolean isSingleton(Supplier<Object> func)
+  {
+     Object instanceA = func.get();
+     Object instanceB = func.get();
+     
+     return instanceA == instanceB;
+  }
+}
+```
+
+**Examples:** ```DesignExamples/SingletonBasic.java```, ```DesignExamples/SingletonEnum.java```, ```DesignExamples/Multiton.java```
+
 ## Structural Design Patterns
 **Concerned with the structure (i.e. class members)**
 
 Many patterns are wrappers that mimic underlying interface
 
 Stress the importance of good API design
+
+### Adapter
+Motivation
+- A similar concept to physical power adapters.
+- Taking an interface you have to get an interface that you want.
+- Use caching when regenerating the same temporary objects each time.
+
+**Adapter:** a construct which adapts an existing interface X to conform to the required interface Y.
+
+**Examples:** ```DesignExamples/AdapterVector```, ```DesignExamples/AdapterCaching```
+
+### Bridge
+Motivation
+- Connecting components together through abstractions
+- Prevents a "Cartesian product" complexity explosion
+
+**Bridge:** a mechanism that decouples an interface from an implementation.
+
+**Examples:** ```DesignExamples/Bridge.java```
+
+### Composite
+Motivation
+- Treating individual and aggregate objects uniformly.
+- Composition lets us make compound objects
+
+**Composite:** a mechanism for treating individual objects and compositions of objects in a uniform manner.
+
+**Examples:** ```DesignExamples/GeometricShapes.java```, ```DesignExamples/NeuralNetworks.java```
 
 ## Behavioral Design Patterns
 **They are all different; no central theme**
