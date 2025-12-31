@@ -1,5 +1,10 @@
 # Git Notes
 
+### Stage all modified files
+```bash
+git add -A
+```
+
 ### Create & push new branch
 ```bash
 git checkout -b [branch]
