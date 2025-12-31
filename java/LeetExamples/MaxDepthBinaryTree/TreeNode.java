@@ -1,4 +1,3 @@
-package MaxDepthBinaryTree;
 
 /*
 Definition for a binary tree node.
