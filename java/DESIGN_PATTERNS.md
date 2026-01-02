@@ -17,7 +17,23 @@
     - [Adapter](#adapter)
     - [Bridge](#bridge)
     - [Composite](#composite)
+    - [Decorator](#decorator)
+    - [Facade](#facade)
+    - [Flyweight](#flyweight)
+    - [Proxy](#proxy)
 4. [Behavioral Design Patterns](#behavioral-design-patterns)
+    - [Chain of Responsibility](#chain-of-responsibility)
+    - [Command](#command)
+    - [Interpreter](#interpreter)
+    - [Iterator](#iterator)
+    - [Mediator](#mediator)
+    - [Memento](#memento)
+    - [Null Object](#null-object)
+    - [Observer](#observer)
+    - [State](#state)
+    - [Strategy](#strategy)
+    - [Template Method](#template-method)
+    - [Visitor](#visitor)
 
 ## SOLID Design Principles
 ### Overview
@@ -209,5 +225,390 @@ Motivation
 
 **Examples:** ```DesignExamples/GeometricShapes.java```, ```DesignExamples/NeuralNetworks.java```
 
+### Decorator
+Motivation
+- Want to add functionality to an object
+- Want to keep new functionality separate
+- Usually keeps the reference to the original object
+
+**Decorator:** allows the addition of functionality to objects without inheriting from them.
+
+**Examples:** ```DesignExamples/StringDecorator.java```, ```DesignExamples/DynamicDecorator.java```, ```DesignExamples/StaticDecorator.java```
+
+### Facade
+Motivation
+- Simplifying a complex subsystem by providing a unified interface
+- Balancing complexity and usability
+
+**Facade:** a simplified interface to a complex subsystem.
+
+```java
+// Example Facade
+class ComputerFacade {
+    private CPU cpu;
+    private Memory memory;
+    private HardDrive hardDrive;
+
+    public ComputerFacade() {
+        this.cpu = new CPU();
+        this.memory = new Memory();
+        this.hardDrive = new HardDrive();
+    }
+
+    public void startComputer() {
+        cpu.freeze();
+        memory.load(0, hardDrive.read(0, 1024));
+        cpu.execute();
+    }
+}
+```
+
+### Flyweight
+Motivation
+- Reducing memory usage by sharing common parts of objects
+- Space optimization
+- Avoid redundancy when storing data
+
+**Flyweight:** lets us use less memory by externally storing data that is common to multiple objects.
+
+**Examples:** ```DesignExamples/Users.java```
+
+### Proxy
+Motivation
+- Controlling access to an object
+- Lazy loading
+- Logging or access control
+
+**Proxy:** an interface for accessing a particular resource.
+
+Proxy vs Decorator
+- Proxy provides an identical interface to the original object, while Decorator adds new functionality.
+- Decorator has a reference to what it is decorating, Proxy may not.
+
+```java
+// Example Proxy
+class Person
+{
+  private int age;
+
+  public Person(int age)
+  {
+    this.age = age;
+  }
+
+  public int getAge()
+  {
+    return age;
+  }
+
+  public void setAge(int age)
+  {
+    this.age = age;
+  }
+
+  public String drink() { return "drinking"; }
+  public String drive() { return "driving"; }
+  public String drinkAndDrive() { return "driving while drunk"; }
+}
+
+class ResponsiblePerson extends Person
+{
+  private Person person;
+
+  public ResponsiblePerson(Person person)
+  {
+    super(person.getAge());
+  }
+  
+  public String drink() {
+      String msg = person.getAge() < 18 ? "too young" : "drinking";
+      return msg;
+  }
+  
+  public String drive() {
+      String msg = person.getAge() < 16 ? "too young" : "driving";
+      return msg;
+  }
+  
+  public String drinkAndDrive() {
+      return "dead";
+  }
+}
+```
+
+**Examples:** ```DesignExamples/ProtectionProxy.java```
+
 ## Behavioral Design Patterns
 **They are all different; no central theme**
+
+### Chain of Responsibility
+Motivation
+- Passing a request along a chain of handlers
+- Each handler decides either to process the request or to pass it to the next handler in the chain
+
+**Chain of Responsibility:** a way of passing a request between a chain of handlers.
+
+Command Query Separation (CQS)
+- Command = asking for an action to be performed
+- Query = asking for data without side effects
+- Having separate means of sending commands and queries
+
+**Examples:** ```DesignExamples/BrokerChain.java```
+
+### Command
+Motivation
+- Encapsulating a request as an object
+- Decoupling the sender of a request from its receiver
+
+**Command:** an object that represents a command to be executed.
+
+```java
+// Example Command
+interface Command
+{
+    void call();
+}
+class BankAccountCommand implements Command
+{
+    private BankAccount account;
+    
+    public enum Action
+    {
+        DEPOSIT, WITHDRAW
+    }
+
+    private Action action;
+    private int amount;
+
+    public BankAccountCommand(BankAccount account, Action action, int amount)
+    {
+        this.account = account;
+        this.action = action;
+        this.amount = amount;
+    }
+
+    @Override
+    public void call()
+    {
+        switch (action)
+        {
+            case DEPOSIT:
+                account.deposit(amount);
+                break;
+            case WITHDRAW:
+                account.withdraw(amount);
+                break;
+        }
+    }
+}
+```
+
+### Interpreter
+Motivation
+- Evaluating sentences in a language
+- Representing grammar rules as classes
+
+**Interpreter:** a way to evaluate sentences in a language. Uses lexical tokens and parsing.
+
+Lexing
+- Breaking input into tokens
+- Example: "3 + 5" -> [3, +, 5]
+
+Parsing
+- Analyzing token sequence according to grammar rules
+- Example: [3, +, 5] -> Expression Tree
+
+**ANTLR:** Another Tool For Language Recognition
+- A powerful parser generator for reading, processing, executing, or translating structured text or binary files.
+
+### Iterator
+Motivation
+- Providing a way to access elements of a collection sequentially without exposing its underlying representation
+
+**Iterator:** an object that enables a programmer to traverse a container, particularly lists.
+
+```java
+// Example Iterator
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+class EvenNumberIterator implements Iterator<Integer>
+{
+    private int current;
+    private final int max;
+
+    public EvenNumberIterator(int max)
+    {
+        this.current = 0;
+        this.max = max;
+    }
+
+    @Override
+    public boolean hasNext()
+    {
+        return current <= max;
+    }
+
+    @Override
+    public Integer next()
+    {
+        if (!hasNext())
+            throw new NoSuchElementException();
+
+        int toReturn = current;
+        current += 2;
+        return toReturn;
+    }
+}
+```
+
+**Examples:** ```DesignExamples/TreeTraversal.java```
+
+### Mediator
+Motivation
+- Components may go in and out of a system at any time
+- Have all components refer to a central component to handle communication (mediator)
+- Facilitates communication between components
+
+**Mediator:** a component that facilitates communication between other components.
+
+**Examples:** ```DesignExamples/ChatRoom.java```, ```DesignExamples/RxEventBroker.java```
+
+### Memento
+Motivation
+- An object goes through changes
+- Capturing and restoring an object's internal state without violating encapsulation
+
+**Memento:** a way to capture and restore an object's internal state without violating encapsulation.
+
+```java
+// Example Memento
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+class Token
+{
+  public int value = 0;
+
+  public Token(int value)
+  {
+    this.value = value;
+  }
+}
+
+class Memento
+{
+  public List<Token> tokens = new ArrayList<>();
+  
+  public Memento(List<Token> tokens) {
+      this.tokens = new ArrayList<>(tokens);
+  }
+}
+
+class TokenMachine
+{
+  public List<Token> tokens = new ArrayList<>();
+
+  public Memento addToken(int value)
+  {
+    tokens.add(new Token(value));
+    return new Memento(tokens);
+  }
+
+  public Memento addToken(Token token)
+  {
+    tokens.add(new Token(token.value));
+    return new Memento(tokens);
+  }
+
+  public void revert(Memento m)
+  {
+    this.tokens = m.tokens;
+  }
+}
+```
+
+**Examples:** ```DesignExamples/Memento.java```
+
+### Null Object
+Motivation
+- When component A uses component B, it typically assumes that B is not null
+
+**Null Object:** a no-op (do nothing) object that conforms to the required interface, satisfying a dependency requirement of some other object.
+
+**Examples:** ```DesignExamples/NullObject.java```
+
+### Observer
+Motivation
+- A way for an object (subject) to notify other objects (observers) about changes
+- Java now has functional objects (lambdas) that can be used for this purpose
+
+**Observer:** a way for an object (subject) to notify other objects (observers) about changes.
+
+**Examples:** ```DesignExamples/ObservableAndObserver.java```, ```DesignExamples/HandmadeEvents.java```
+
+### State
+Motivation
+- An object can change its behavior when its internal state changes
+
+**State:** a pattern where the object's behavior is determined by its state.
+- Every single state has its own class.
+
+**Examples:** ```DesignExamples/SpringStatemachine.java```
+
+### Strategy
+Motivation
+- Many algorithms can be decomposed into higher and lower level parts
+- The higher level algorithm can be reused for other tasks, while lower level are specific
+
+**Strategy:** enables the exact behavior of a system to be selected either at runtime (dynamic) or compile-time (static).
+
+**Examples:** ```DesignExamples/StaticStrategy.java```
+
+### Template Method
+Motivation
+- A way to define the skeleton of an algorithm in a method, deferring some steps to subclasses
+- Allows subclasses to redefine certain steps of an algorithm without changing the algorithm's structure
+
+**Template Method:** a behavioral design pattern that defines the skeleton of an algorithm in a method, deferring some steps to subclasses.
+
+```java
+// Example Template Method
+abstract class Game {
+    protected int currentPlayer;
+    protected final int numberOfPlayers;
+
+    public Game(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
+    }
+
+    // Skeleton Algorithm
+    public void run() {
+        start();
+        while (!haveWinner()) {
+            takeTurn();
+        }
+        System.out.println("Player " + getWinner() + " wins.");
+    }
+
+    // Inherit from this game class and implement these methods
+    protected abstract void start();
+    protected abstract void takeTurn();
+    protected abstract boolean haveWinner();
+    protected abstract int getWinner();
+}
+
+class Chess extends Game {
+    /// Implement methods
+}
+```
+
+### Visitor
+Motivation
+- Allows adding extra behaviors to entire hierarchies of classes
+- Need to define a new operation on an entire class hierarchy
+- Create an external component, avoid type checks
+
+**Visitor:** a component (visitor) that is allowed to traverse the entire hierarchy. Implemented by propagating a single visit() method throughout entire hierarchy,
+
+**Examples:** ```DesignExamples/IntrusiveVisitor.java``` (violates open-close principle and sole-responsibility principle), ```DesignExamples/ReflectiveVisitor.java``` (recursive), ```DesignExamples/ClassicVisitor.java``` (double-dispatch).
